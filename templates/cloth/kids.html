@@ -1,0 +1,45 @@
+<style>
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007BFF;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .card {
+        margin-bottom: 20px;
+        max-width: 18rem;
+        margin: 0 auto;
+    }
+</style>
+
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+    {% for cloth in clothes %}
+    <li>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ cloth.title }}</h5>
+                <p class="card-text">{{ cloth.price }}$</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ cloth.description }}</li>
+                <li class="list-group-item">{% for tag in cloth.tags.all %}
+                    <p>#{{ tag.name }}</p>
+                {% endfor %}</li>
+            </ul>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+<center>
+    <a class="btn btn-primary" href="/men_cloth/" role="button">М</a>
+    <a class="btn btn-primary" href="/kids_cloth/" role="button">Д</a>
+    <a class="btn btn-primary" href="/women_cloth/" role="button">Ж</a>
+    <br>
+</center>

@@ -24,3 +24,8 @@ class Book(models.Model):
         return f'{self.title} - {self.created_at}'
 
 
+class Review(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
+    stars = models.PositiveIntegerField(verbose_name='stars',default=5)
+    text = models.TextField(verbose_name='enter the review')
+    created_at = models.DateTimeField(auto_now_add=True)

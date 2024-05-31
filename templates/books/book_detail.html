@@ -1,6 +1,4 @@
 <br>
-
-
 <img src="{{ book.image.url }}" class="img-thumbnail" alt="">
 <br>
     <br>
@@ -18,5 +16,11 @@
     <li class="list-group-item">Музыка: {{ book.music }}</li>
     <li class="list-group-item">Видео: {{ book.video }}</li>
   </ul>
+    <p>Отзывы</p>
+    {% for review in book.reviews.all %}
+        <h4>Текст: {{ review.text }}</h4>
+        <h4>Звезды: {{ review.stars }}</h4>
+        <h4>Создано: {{ review.created_at }}</h4>
+    {% endfor %}
 </div>
 <br>
