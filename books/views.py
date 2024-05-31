@@ -1,8 +1,8 @@
 from . import forms
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from datetime import datetime
-
+from django.views import generic
 from books.models import Book
 
 
@@ -20,60 +20,53 @@ def datetime_view(request):
     if request.method == 'GET':
         return HttpResponse(datetime.now())
 
-def book_list_view(request):
-    if request.method == 'GET':
-        books = Book.objects.all()
-        context = {'books': books,}
-        return render(request,template_name='books/books_list.html',context=context)
+
+class BookListView(generic.ListView):
+    template_name = "books/books_list.html"
+    model = Book
+    context_object_name = "books"
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+class BooksDetailView(generic.DetailView):
+    template_name = "books/book_detail.html"
+    def get_object(self, **kwargs):
+        books_id = self.kwargs.get("id")
+        return get_object_or_404(Book, id=books_id)
 
 
-def book_detail_view(request, id):
-    if request.method == 'GET':
-        book = Book.objects.get(id=id)
-        context = {'book': book,}
-        return render(request,'books/book_detail.html',context=context)
+class CreateReviewView(generic.CreateView):
+    template_name = "books/create_review.html"
+    form_class = forms.ReviewForm
+    success_url = "/books"
 
+    def form_valid(self, form):
+        return super(CreateReviewView, self).form_valid(form=form)
 
-def create_review_view(request):
-    if request.method == 'POST':
-        form = forms.ReviewForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Comment added')
-    else:
-        form = forms.ReviewForm()
+class EditBookView(generic.UpdateView):
+    template_name = "books/edit.html"
+    form_class = forms.BookForm
+    success_url = "/books"
 
-    return render(request, template_name='books/create_review.html', context={'form': form})
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get("id")
+        return get_object_or_404(Book, id=book_id)
 
+    def form_valid(self, form):
+        return super(EditBookView, self).form_valid(form=form)
 
-def edit_book_view(request, id):
-    book_id = get_object_or_404(Book, id=id)
-    if request.method == 'POST':
-        form = forms.BookForm(request.POST, instance=book_id)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Книга изменена!')
-    else:
-        form = forms.BookForm(instance=book_id)
-    return render(request, template_name='books/edit.html', context={'book_id': book_id,
-                                                               'form': form})
+class DeleteBookView(generic.DeleteView):
+    success_url = "/books"
+    template_name = "books/delete.html"
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get("id")
+        return get_object_or_404(Book, id=book_id)
 
+class CreateBookView(generic.CreateView):
+    template_name = "books/create.html"
+    form_class = forms.BookForm
+    success_url = "/books"
 
-def delete_book_view(request, id):
-    book_id = get_object_or_404(Book, id=id)
-    book_id.delete()
-    return HttpResponse('Книга удалена')
-
-
-def create_book_view(request):
-    if request.method == 'POST':
-        form = forms.BookForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Книга добавлена!')
-    else:
-        form = forms.BookForm()
-
-    return render(request, template_name='books/create.html', context={'form': form})
-
-
+    def form_valid(self, form):
+        return super(CreateBookView, self).form_valid(form=form)

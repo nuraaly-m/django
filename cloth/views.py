@@ -1,26 +1,39 @@
 from django.shortcuts import render
+from django.views import generic
 
 from cloth.models import Cloth
 
 
 # Create your views here.
+class ListClothesView(generic.ListView):
+    template_name = "cloth/list_cloth.html"
+    context_object_name = "clothes"
+    model = Cloth
 
-def list_clothes(request):
-    clothes = Cloth.objects.all()
-    context = {'clothes': clothes}
-    return render(request,template_name='cloth/list_cloth.html',context=context)
+    def get_queryset(self):
+        return self.model.objects.all()
 
-def kids_clothes(request):
-    clothes = Cloth.objects.filter(tags__name__icontains='детская')
-    context = {'clothes': clothes}
-    return render(request,template_name='cloth/kids.html',context=context)
+class KidsClothes(generic.ListView):
+    template_name = "cloth/kids.html"
+    context_object_name = "clothes"
+    model = Cloth
 
-def women_clothes(request):
-    clothes = Cloth.objects.filter(tags__name__icontains='женская')
-    context = {'clothes': clothes}
-    return render(request,template_name='cloth/list_cloth.html',context=context)
+    def get_queryset(self):
+        return self.model.objects.filter(tags__name__icontains='детская')
 
-def men_clothes(request):
-    clothes = Cloth.objects.filter(tags__name__icontains='мужская')
-    context = {'clothes': clothes}
-    return render(request,template_name='cloth/list_cloth.html',context=context)
+class WomenClothes(generic.ListView):
+    template_name = "cloth/list_cloth.html"
+    context_object_name = "clothes"
+    model = Cloth
+
+    def get_queryset(self):
+        return self.model.objects.filter(tags__name__icontains='женская')
+
+class MenClothes(generic.ListView):
+    template_name = "cloth/list_cloth.html"
+    context_object_name = "clothes"
+    model = Cloth
+
+    def get_queryset(self):
+        return self.model.objects.filter(tags__name__icontains='мужская')
+
