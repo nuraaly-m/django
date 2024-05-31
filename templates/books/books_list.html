@@ -1,0 +1,57 @@
+<style>
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .form-control {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007BFF;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .card {
+        margin-bottom: 20px;
+        max-width: 540px;
+    }
+    .card img {
+        border-radius: 5px 0 0 5px;
+        width: 100%;
+        height: auto;
+    }
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+    {% for book in books %}
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ book.image.url }}" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title}}</h5>
+                    <p class="card-text">{{ book.description | slice:":99" }}...</p>
+                    <p class="card-text"><small class="text-muted">{{ book.genre }}</small></p>
+                    <a href="/book/{{ book.id }}" class="btn btn-primary">More...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</ul>
