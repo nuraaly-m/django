@@ -74,7 +74,6 @@ class CreateBookView(generic.CreateView):
 class SearchBookView(generic.ListView):
     template_name = "books/books_list.html"
     context_object_name = "books"
-    paginate_by = 5
 
     def get_queryset(self):
         return Book.objects.filter(
