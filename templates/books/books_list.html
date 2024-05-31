@@ -25,6 +25,11 @@
     }
 </style>
 
+<form action="{% url 'search_book' %}" method="GET" class="search-form">
+    <input type="search" name="q" class="form-control" placeholder="Search">
+    <button type="submit" class="btn">Поиск</button>
+</form>
+
 <ul style="list-style-type: none; padding: 0; margin: 0;">
     {% for book in books %}
     <div class="card">
