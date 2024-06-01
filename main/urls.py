@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('books.urls')),
     path('', include('cloth.urls')),
     path('', include('users.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -11,7 +11,7 @@ class ListClothesView(generic.ListView):
     model = Cloth
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.prefetch_related('tags__cloth_set')
 
 class KidsClothes(generic.ListView):
     template_name = "cloth/kids.html"
@@ -19,7 +19,7 @@ class KidsClothes(generic.ListView):
     model = Cloth
 
     def get_queryset(self):
-        return self.model.objects.filter(tags__name__icontains='детская')
+        return self.model.objects.prefetch_related('tags__cloth_set').filter(tags__name__icontains='детская')
 
 class WomenClothes(generic.ListView):
     template_name = "cloth/list_cloth.html"
@@ -27,7 +27,7 @@ class WomenClothes(generic.ListView):
     model = Cloth
 
     def get_queryset(self):
-        return self.model.objects.filter(tags__name__icontains='женская')
+        return self.model.objects.prefetch_related('tags__cloth_set').filter(tags__name__icontains='женская')
 
 class MenClothes(generic.ListView):
     template_name = "cloth/list_cloth.html"
@@ -35,5 +35,5 @@ class MenClothes(generic.ListView):
     model = Cloth
 
     def get_queryset(self):
-        return self.model.objects.filter(tags__name__icontains='мужская')
+        return self.model.objects.prefetch_related('tags__cloth_set').filter(tags__name__icontains='мужская')
 
